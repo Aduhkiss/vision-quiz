@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vision Element Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+    h1 {
+      text-align: center;
+      color: #444;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .question h2 {
+      font-size: 1.2em;
+    }
+    .options {
+      margin: 10px 0;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .results {
+      margin-top: 20px;
+      font-size: 1.2em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Which Element Should Your Vision Be?</h1>
+    <form id="quizForm">
+      <div class="question" data-dendro="5" data-pyro="3" data-hydro="4" data-electro="2" data-anemo="2" data-geo="1" data-cryo="1">
+        <h2>What kind of weather do you enjoy the most?</h2>
+        <div class="options">
+          <label><input type="radio" name="q1" value="A"> A warm, sunny day with a slight breeze.</label>
+          <label><input type="radio" name="q1" value="B"> A thunderstorm with dramatic lightning and booming thunder.</label>
+          <label><input type="radio" name="q1" value="C"> A misty morning by a calm lake or stream.</label>
+          <label><input type="radio" name="q1" value="D"> A crisp, cold evening with frost on the ground.</label>
+          <label><input type="radio" name="q1" value="E"> A cozy day indoors with rain gently tapping on the windows.</label>
+          <label><input type="radio" name="q1" value="F"> A vibrant, hot summer day where you feel unstoppable.</label>
+          <label><input type="radio" name="q1" value="G"> A peaceful day surrounded by flowers and trees.</label>
+        </div>
+      </div>
+
+      <!-- Repeat similar structure for all questions -->
+
+      <button type="button" onclick="calculateResults()">Submit</button>
+    </form>
+
+    <div id="results" class="results" style="display: none;"></div>
+  </div>
+
+  <script>
+    const elementScores = {
+      Dendro: 0,
+      Pyro: 0,
+      Hydro: 0,
+      Electro: 0,
+      Anemo: 0,
+      Geo: 0,
+      Cryo: 0
+    };
+
+    function calculateResults() {
+      const form = document.getElementById('quizForm');
+      const questions = form.querySelectorAll('.question');
+
+      questions.forEach(question => {
+        const selected = question.querySelector('input[type="radio"]:checked');
+        if (selected) {
+          const scores = question.dataset;
+          for (const [key, value] of Object.entries(scores)) {
+            elementScores[key] += parseInt(value);
+          }
+        }
+      });
+
+      const highestScore = Math.max(...Object.values(elementScores));
+      const bestElements = Object.keys(elementScores).filter(
+        element => elementScores[element] === highestScore
+      );
+
+      displayResults(bestElements);
+    }
+
+    function displayResults(elements) {
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.style.display = 'block';
+      resultsDiv.innerHTML = `Your Vision aligns with: <strong>${elements.join(' and ')}</strong>`;
+    }
+  </script>
+</body>
+</html>
